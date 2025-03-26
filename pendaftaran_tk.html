@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TK Miftahul Alaliyah</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 10px;
+        }
+        label {
+            width: 45%;
+            text-align: left;
+        }
+        input {
+            width: 50%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .login-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #28a745;
+            color: white;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        .aksi-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .aksi-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Formulir Pendaftaran</h2>
+        <form id="formPendaftaran">
+            <div class="form-group"><label>Nama Lengkap:</label><input type="text" id="nama" required></div>
+            <div class="form-group"><label>Tempat & Tanggal Lahir:</label><input type="text" id="ttl" required></div>
+            <div class="form-group"><label>Agama:</label><input type="text" id="agama" required></div>
+            <div class="form-group"><label>Nama Ayah:</label><input type="text" id="ayah" required></div>
+            <div class="form-group"><label>Pekerjaan Ayah:</label><input type="text" id="pekerjaan_ayah" required></div>
+            <div class="form-group"><label>No NIK Ayah:</label><input type="text" id="nik_ayah" required></div>
+            <div class="form-group"><label>Nama Ibu:</label><input type="text" id="ibu" required></div>
+            <div class="form-group"><label>Pekerjaan Ibu:</label><input type="text" id="pekerjaan_ibu" required></div>
+            <div class="form-group"><label>No NIK Ibu:</label><input type="text" id="nik_ibu" required></div>
+            <div class="form-group"><label>No NIK Anak (Pendaftar):</label><input type="text" id="nik_anak" required></div>
+            <div class="form-group"><label>Nomor Kartu Keluarga:</label><input type="text" id="kk" required></div>
+            <div class="form-group"><label>Nomor Telepon:</label><input type="text" id="telepon" required></div>
+            <div class="form-group"><label>Email:</label><input type="email" id="email" required></div>
+            <button type="submit">Daftar</button>
+        </form>
+    </div>
+    
+    <div class="login-container">
+        <button onclick="tampilkanLogin()">Tampilkan Data Pendaftar</button>
+    </div>
+    
+    <div id="loginForm" class="container" style="display:none;">
+        <h2>Login Admin</h2>
+        <div class="login-form">
+            <label>Username:</label>
+            <input type="text" id="username">
+            <label>Password:</label>
+            <input type="password" id="password">
+            <button onclick="cekLogin()">Login</button>
+        </div>
+    </div>
+    
+    <div id="dataPendaftar" class="container" style="display:none;">
+        <h2>Data Pendaftar</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>TTL</th>
+                    <th>Agama</th>
+                    <th>Nama Ayah</th>
+                    <th>Pekerjaan Ayah</th>
+                    <th>No NIK Ayah</th>
+                    <th>Nama Ibu</th>
+                    <th>Pekerjaan Ibu</th>
+                    <th>No NIK Ibu</th>
+                    <th>No NIK Anak</th>
+                    <th>No KK</th>
+                    <th>Telepon</th>
+                    <th>Email</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="tabelPendaftar"></tbody>
+        </table>
+        <p id="pesanKosong" style="display: none; text-align: center;">Belum ada pendaftar.</p>
+    </div>
+</body>
+</html>
+<script>
+        document.getElementById('formPendaftaran').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let pendaftar = {
+                nama: document.getElementById('nama').value,
+                ttl: document.getElementById('ttl').value,
+                agama: document.getElementById('agama').value,
+                ayah: document.getElementById('ayah').value,
+                pekerjaan_ayah: document.getElementById('pekerjaan_ayah').value,
+                nik_ayah: document.getElementById('nik_ayah').value,
+                ibu: document.getElementById('ibu').value,
+                pekerjaan_ibu: document.getElementById('pekerjaan_ibu').value,
+                nik_ibu: document.getElementById('nik_ibu').value,
+                nik_anak: document.getElementById('nik_anak').value,
+                kk: document.getElementById('kk').value,
+                telepon: document.getElementById('telepon').value,
+                email: document.getElementById('email').value
+            };
+            let data = JSON.parse(localStorage.getItem('pendaftar')) || [];
+            data.push(pendaftar);
+            localStorage.setItem('pendaftar', JSON.stringify(data));
+            alert('Pendaftaran berhasil!');
+            this.reset();
+        });
+        
+        function tampilkanLogin() {
+            document.getElementById('loginForm').style.display = 'block';
+        }
+        
+        function cekLogin() {
+            let username = document.getElementById('username').value;
+            let password = document.getElementById('password').value;
+            if (username === 'admin' && password === 'alaliyah123') {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('dataPendaftar').style.display = 'block';
+                tampilkanData();
+            } else {
+                alert('Login gagal!');
+            }
+        }
+        
+        function tampilkanData() {
+            let data = JSON.parse(localStorage.getItem('pendaftar')) || [];
+            let tabel = document.getElementById('tabelPendaftar');
+            let pesan = document.getElementById('pesanKosong');
+            tabel.innerHTML = '';
+            if (data.length === 0) {
+                pesan.style.display = 'block';
+            } else {
+                pesan.style.display = 'none';
+                data.forEach((item, index) => {
+                    let row = `<tr>
+                        <td>${item.nama}</td>
+                        <td>${item.ttl}</td>
+                        <td>${item.agama}</td>
+                        <td>${item.ayah}</td>
+                        <td>${item.pekerjaan_ayah}</td>
+                        <td>${item.nik_ayah}</td>
+                        <td>${item.ibu}</td>
+                        <td>${item.pekerjaan_ibu}</td>
+                        <td>${item.nik_ibu}</td>
+                        <td>${item.nik_anak}</td>
+                        <td>${item.kk}</td>
+                        <td>${item.telepon}</td>
+                        <td>${item.email}</td>
+                        <td><button onclick="hapusData(${index})">Hapus</button></td>
+                    </tr>`;
+                    tabel.innerHTML += row;
+                });
+            }
+        }
+    </script>
+</body>
+</html> 
